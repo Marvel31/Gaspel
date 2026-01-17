@@ -16,8 +16,8 @@ def handler(request):
                 'body': '복음 본문을 찾을 수 없습니다.'
             }
         
-        # 본문이 들어있는 div 찾기
-        gospel_div = gospel_start.parent
+        # 본문이 들어있는 div 찾기: 부모 div의 부모 div
+        gospel_div = gospel_start.find_parent('div').find_parent('div')
         full_text = gospel_div.get_text()
         
         # "주님의 말씀입니다" 전까지 추출
