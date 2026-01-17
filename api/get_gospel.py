@@ -3,7 +3,11 @@ import requests
 
 def handler(request):
     try:
-        url = "https://missa.cbck.or.kr/DailyMissa/"
+        date = request.get('date')
+        if date:
+            url = f"https://missa.cbck.or.kr/DailyMissa/{date}"
+        else:
+            url = "https://missa.cbck.or.kr/DailyMissa/"
         response = requests.get(url)
         response.raise_for_status()
         soup = BeautifulSoup(response.text, 'html.parser')

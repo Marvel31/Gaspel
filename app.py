@@ -1,4 +1,4 @@
-from flask import Flask, send_from_directory
+from flask import Flask, send_from_directory, request
 from api.get_gospel import handler
 
 app = Flask(__name__)
@@ -13,7 +13,8 @@ def static_files(path):
 
 @app.route('/api/get_gospel')
 def get_gospel():
-    result = handler({})
+    date = request.args.get('date')
+    result = handler({'date': date})
     return result['body'], result['statusCode']
 
 if __name__ == '__main__':
