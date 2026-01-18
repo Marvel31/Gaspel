@@ -10,10 +10,6 @@
     {
       "src": "/api/get_gospel",
       "dest": "api/get_gospel.py"
-    },
-    {
-      "src": "/(.*)",
-      "dest": "/public/index.html"
     }
   ]
 }
