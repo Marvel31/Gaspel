@@ -12,16 +12,23 @@ def handler(request):
         response.raise_for_status()
         soup = BeautifulSoup(response.text, 'html.parser')
         
-        # 복음 본문 찾기: "그때에"로 시작하는 텍스트
-        gospel_start = soup.find(string=lambda text: text and text.strip().startswith("그때에"))
-        if not gospel_start:
+        # 복음 헤더 찾기
+        gospel_header = soup.find('h4', string='복음')
+        if not gospel_header:
+            return {
+                'statusCode': 404,
+                'body': '복음 섹션을 찾을 수 없습니다.'
+            }
+        
+        # 복음 본문이 들어있는 div 찾기: 헤더 다음 row tjustify div
+        gospel_row = gospel_header.find_next('div', class_='row tjustify')
+        if not gospel_row:
             return {
                 'statusCode': 404,
                 'body': '복음 본문을 찾을 수 없습니다.'
             }
         
-        # 본문이 들어있는 div 찾기: 부모 div의 부모 div
-        gospel_div = gospel_start.find_parent('div').find_parent('div')
+        gospel_div = gospel_row.find('div', class_='col-12').find('div')
         full_text = gospel_div.get_text()
         
         # "주님의 말씀입니다" 전까지 추출
